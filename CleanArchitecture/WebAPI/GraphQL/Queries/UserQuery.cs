@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Application.Features.Users.Queries.GetAll;
 using Domain.Entities;
+using Application.Features.Users.Queries.ViewModels;
 
 namespace WebAPI.GraphQL.Queries
 {
@@ -9,9 +10,10 @@ namespace WebAPI.GraphQL.Queries
         [UseProjection]
         [UseFiltering]
         [UseSorting]
-        public async Task<IQueryable<User>> GetUsers([Service] IMediator _mediator)
+        public async Task<IQueryable<UserViewModel>> GetUsers([Service] IMediator _mediator)
         {
-            return await _mediator.Send(new GetAllUserQuery());
+            var data = await _mediator.Send(new GetAllUserQuery());
+            return data.Data.AsQueryable();
         }
     }
 }
